@@ -1,0 +1,59 @@
+$featureBoxBackgroundColor: #F5F5F5; // Light contrasting color
+@import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+
+* {
+    font-family: 'Cabin', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('../../assets/wave-background.svg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.glass {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.branding {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+}
+
+.feature {
+    width: 150px;
+    aspect-ratio: 2/2;
+    background-color: $featureBoxBackgroundColor;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px #328E53;
+}
+
+.feature h2 {
+    text-align: center;
+    font-size: 16px;
+}

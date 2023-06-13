@@ -49,6 +49,13 @@ const config = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(svg)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/[name][ext]",
+        },
+      },
     ],
   },
   resolve: {
@@ -61,6 +68,7 @@ const config = {
     }),
     new CopyPlugin([
       { from: "src/img", to: "img" },
+      { from: "src/assets", to: "assets" },
       // { from: "src/error.html", to: "" },
       // { from: "src/lib/fonts", to: "fonts" },
       // { from: "src/lib/webfonts", to: "webfonts" },
