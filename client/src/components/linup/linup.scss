@@ -1,0 +1,122 @@
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-color: #f9f9f9;
+$border-color: #cccccc;
+
+#app {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.players-container {
+    margin-right: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    height: 400px;
+    /* Fixed height */
+
+    .position-group {
+        margin-bottom: 20px;
+        background-color: #f2f2f2;
+        padding: 10px;
+        width: 150px;
+        border-radius: 5px;
+
+        .position-header {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .player {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: grab;
+
+            &:hover {
+                background-color: #e6e6e6;
+            }
+
+            .position {
+                color: $secondary-color;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.lineup-container {
+    background-color: $background-color;
+    padding: 20px;
+    border: 1px dashed $border-color;
+    min-height: 200px;
+    width: 200px;
+
+    .empty-spot {
+        height: 18px;
+        background-color: lightgray;
+        border: 1px solid gray;
+        margin-bottom: 10px;
+    }
+
+    .position-group {
+        margin-bottom: 20px;
+
+        .position-header {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .lineup-spot {
+            position: relative;
+            /* Add position relative for proper positioning of remove button */
+            border: 1px solid $border-color;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f2f2f2;
+            }
+
+            &.valid-drop {
+                border-color: $primary-color;
+            }
+
+            .remove-button {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background-color: #ff0000;
+                color: #ffffff;
+                border: none;
+                padding: 2px 6px;
+                border-radius: 4px;
+                cursor: pointer;
+                opacity: 0;
+                /* Hide remove button by default */
+                transition: opacity 0.3s ease-in-out;
+                /* Add transition effect for smooth visibility */
+            }
+
+            &:hover .remove-button {
+                opacity: 1;
+                /* Show remove button on hover */
+            }
+        }
+    }
+}
+
+.position-group {
+    &:not(:last-child) {
+        border-bottom: 1px dotted $border-color;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+}
