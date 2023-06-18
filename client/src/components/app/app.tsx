@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './app.scss';
 import { LandingPage } from '../landingpage/landingpage';
 import { Linup } from '../linup/linup';
+import Card from '../card/card';
 
 const App: React.FC = () => {
     return (
@@ -11,8 +12,11 @@ const App: React.FC = () => {
                 <Route exact path="/info">
                     <LandingPage />
                 </Route>
-                <Route path="/">
+                <Route exact path="/linup">
                     <Linup />
+                </Route>
+                <Route path="/">
+                    <Card />
                 </Route>
             </Switch>
         </Router>
