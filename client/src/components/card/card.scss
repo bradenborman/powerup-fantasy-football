@@ -36,6 +36,7 @@
             /* Make the overlay ignore pointer events */
         }
 
+
         .image-wrapper {
             position: relative;
 
@@ -331,4 +332,17 @@
             }
         }
     }
+}
+
+
+.holo-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 98%;
+    height: 98%;
+    background-image: url('https://img1.picmix.com/output/stamp/normal/2/3/2/4/1704232_008df.gif');
+    opacity: .3;
+    pointer-events: none;
 }

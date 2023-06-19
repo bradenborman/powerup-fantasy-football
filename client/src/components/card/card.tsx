@@ -1,5 +1,6 @@
 import React from 'react';
 import { getMessageSize } from './utilites/texthelper';
+import classNames from 'classnames';
 
 export enum Energy {
     Fighting = 'https://images.squarespace-cdn.com/content/v1/63477d5b22ce645aee564230/dc5391d6-c6ae-4099-a689-3260e2dac115/S2qyp1S.png',
@@ -36,13 +37,16 @@ interface PokemonImageProps {
     desc: string;
     height: string;
     weight: string;
+    holo?: boolean;
 }
 
-const PokemonImage: React.FC<PokemonImageProps> = ({ src, desc, height, weight }) => {
+const PokemonImage: React.FC<PokemonImageProps> = ({ src, desc, height, weight, holo = false }) => {
     return (
         <div className='image-wrapper'>
-            <div className="image">
-                <img src={src} alt="Pokemon Image" />
+            <div className={classNames({ "holo-effect": holo })}>
+                <div className="image">
+                    <img src={src} alt="Pokemon Image" />
+                </div>
             </div>
             <div className="composition-wrapper">
                 <div className="composition">
@@ -258,6 +262,7 @@ const Card: React.FC = () => {
                     desc='Fire Pokemon'
                     height={`5'5"`}
                     weight='90 lbs'
+                    holo
                 />
                 <Attacks>
                     <PokemonPower name='Enery Burn' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
@@ -294,6 +299,7 @@ const Card: React.FC = () => {
                     desc='Toad Pokemon'
                     height={`3'3"`}
                     weight='45 lbs'
+                    holo
                 />
                 <Attacks>
                     <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
@@ -329,6 +335,7 @@ const Card: React.FC = () => {
                     desc='Turtle Pokemon'
                     height={`4'7"`}
                     weight='56 lbs'
+                    holo
                 />
                 <Attacks>
                     <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
