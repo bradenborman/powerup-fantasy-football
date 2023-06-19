@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getMessageSize } from './utilites/texthelper';
 import classNames from 'classnames';
 
@@ -212,160 +212,241 @@ const Card: React.FC = () => {
     const backgroundStyleGreen = "linear-gradient(180deg, #BAC26D, #7C9551)";
     const backgroundStyleBlue = "linear-gradient(180deg, #428CB6, #689CB9)";
 
+    const [name, setName] = useState('Pikachu');
+    const [hp, setHP] = useState(60);
+    const [pokedex, setPokedex] = useState('It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you.');
+    const [energyCounts, setEnergyCounts] = useState([1, 2]);
+    const [attackNames, setAttackNames] = useState(['Gnaw', 'ThunderJolt']);
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newName = e.target.value;
+        if (newName.length <= 12) {
+            setName(newName);
+        }
+    };
+
+    const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newHP = Number(e.target.value);
+        if (newHP >= 30 && newHP <= 120) {
+            setHP(newHP);
+        }
+    };
+
+    const handlePokedexChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newPokedexEntry = e.target.value;
+        if (newPokedexEntry.length <= 110) {
+            setPokedex(newPokedexEntry);
+        }
+    };
+
+    const handleEnergyCountChange = (index: number, e: any) => {
+        const newCount = Number(e.target.value);
+        if (newCount >= 1 && newCount <= 4) {
+            const updatedCounts = [...energyCounts];
+            updatedCounts[index] = newCount;
+            setEnergyCounts(updatedCounts);
+        }
+    };
+
+    const handleAttackNameChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+        const newName = e.target.value;
+        if (newName.length >= 0 && newName.length <= 20) {
+            const updatedNames = [...attackNames];
+            updatedNames[index] = newName;
+            setAttackNames(updatedNames);
+        }
+    };
+
+
     return (
-        <div className="card-wrapper">
-            <div className="pokemon-card" style={{ background: backgroundStyleYellow }}>
-                <PokemonNameHP name='Pikachu' hp={60} type={Energy.Lightning} stage='Basic Pokémon' />
-                <PokemonImage
-                    src='https://sportshub.cbsistatic.com/i/2021/08/09/5a5471ca-0865-47ab-8f46-c74173d2b540/base-set-pikachu-1275663.jpg'
-                    desc='Mouse Pokemon'
-                    height={`1'04"`}
-                    weight='13.2 lbs'
-                />
-                <Attacks>
-                    <Attack
-                        name="Gnaw"
-                        damage={20}
-                        energyCost={{ type: Energy.Normal, amount: 1 }}
+        <>
+            <div className="card-wrapper">
+                <div className="pokemon-card" style={{ background: backgroundStyleYellow }}>
+                    <PokemonNameHP name={name} hp={hp} type={Energy.Lightning} stage='Basic Pokémon' />
+                    <PokemonImage
+                        src='https://sportshub.cbsistatic.com/i/2021/08/09/5a5471ca-0865-47ab-8f46-c74173d2b540/base-set-pikachu-1275663.jpg'
+                        desc='Mouse Pokemon'
+                        height={`1'04"`}
+                        weight='13.2 lbs'
                     />
-                    <Attack
-                        name="Thunder Jolt"
-                        effect="Flip a coin. If tails, Pikachu does 10 damage to itself."
-                        damage={30}
-                        energyCost={{ type: Energy.Electric, amount: 2 }}
+                    <Attacks>
+                        {attackNames.map((name, index) => (
+                            <Attack
+                                key={index}
+                                name={name}
+                                damage={20 + (index * 10)}
+                                energyCost={{ type: Energy.Normal, amount: energyCounts[index] }}
+                            />
+                        ))}
+                    </Attacks>
+                    <div className="additional-info">
+                        <Weakness energy={Energy.Fighting} />
+                        <Resistance />
+                        <RetreatCost
+                            energy={Energy.Normal}
+                            count={1}
+                        />
+                    </div>
+                    <PokedexEntry
+                        text={pokedex}
+                        level={12}
+                        dexNumber={25}
                     />
-                </Attacks>
-                <div className="additional-info">
-                    <Weakness energy={Energy.Fighting} />
-                    <Resistance />
-                    <RetreatCost
-                        energy={Energy.Normal}
-                        count={1}
-                    />
+                    <div className='rarity'>
+                        <span>58 / 102</span>
+                        <img src='https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/_tiles/sv/updates/inline/symbols/common.png' alt="Rarity" />
+                    </div>
                 </div>
-                <PokedexEntry
-                    text="It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you."
-                    level={12}
-                    dexNumber={25}
-                />
-                <div className='rarity'>
-                    <span>58 / 102</span>
-                    <img src='https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/_tiles/sv/updates/inline/symbols/common.png' alt="Rarity" />
+
+
+                <div className="pokemon-card" style={{ background: backgroundStyleRed }}>
+                    <PokemonNameHP name='Charizard' hp={60} type={Energy.Fire} stage='Stage 2' />
+                    <PokemonImage
+                        src="https://mlpnk72yciwc.i.optimole.com/cqhiHLc.IIZS~2ef73/w:auto/h:auto/q:75/https://bleedingcool.com/wp-content/uploads/2020/05/Charizard-Base-SEt-art-pkmn.jpg"
+                        desc='Fire Pokemon'
+                        height={`5'5"`}
+                        weight='90 lbs'
+                        holo
+                    />
+                    <Attacks>
+                        <PokemonPower name='Enery Burn' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
+                        <Attack
+                            name="Fire Spin"
+                            effect="Discard 3 Enery cards attached to this Pokemon."
+                            damage={30}
+                            energyCost={{ type: Energy.Fire, amount: 4 }}
+                        />
+                    </Attacks>
+                    <div className="additional-info">
+                        <Weakness energy={Energy.Water} />
+                        <Resistance type={Energy.Fighting} amount={20} />
+                        <RetreatCost
+                            energy={Energy.Normal}
+                            count={3}
+                        />
+                    </div>
+                    <PokedexEntry
+                        text="It is said that Charizard’s fire burns hotter if it has experienced harsh battles."
+                        level={76}
+                        dexNumber={6}
+                    />
+                    <div className='rarity'>
+                        <span>11 / 108</span>
+                        <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
+                    </div>
+                </div>
+
+                <div className="pokemon-card" style={{ background: backgroundStyleGreen }}>
+                    <PokemonNameHP name='Venusaur' hp={120} type={Energy.Grass} stage='Stage 2' />
+                    <PokemonImage
+                        src="https://bleedingcool.com/wp-content/uploads/2020/07/Base-Set-Venusaur-art-ptcg-1200x900.jpg"
+                        desc='Toad Pokemon'
+                        height={`3'3"`}
+                        weight='45 lbs'
+                        holo
+                    />
+                    <Attacks>
+                        <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
+                        <Attack
+                            name="Solarbeam"
+                            damage={60}
+                            energyCost={{ type: Energy.Grass, amount: 4 }}
+                        />
+                    </Attacks>
+                    <div className="additional-info">
+                        <Weakness energy={Energy.Fire} />
+                        <Resistance />
+                        <RetreatCost
+                            energy={Energy.Normal}
+                            count={2}
+                        />
+                    </div>
+                    <PokedexEntry
+                        text="Its plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
+                        level={47}
+                        dexNumber={3}
+                    />
+                    <div className='rarity'>
+                        <span>15 / 102</span>
+                        <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
+                    </div>
+                </div>
+
+                <div className="pokemon-card" style={{ background: backgroundStyleBlue }}>
+                    <PokemonNameHP name='Blastoise' hp={100} type={Energy.Water} stage='Stage 2' />
+                    <PokemonImage
+                        src="https://cdna.artstation.com/p/assets/images/images/029/617/598/large/anavae-ru-blastoise-base-set-illustration6.jpg?1598119524"
+                        desc='Turtle Pokemon'
+                        height={`4'7"`}
+                        weight='56 lbs'
+                        holo
+                    />
+                    <Attacks>
+                        <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
+                        <Attack
+                            name="Hydo Pump"
+                            effect='Does 40 damage + 10 more for each energy attached.'
+                            damage={40}
+                            energyCost={{ type: Energy.Water, amount: 3 }}
+                        />
+                    </Attacks>
+                    <div className="additional-info">
+                        <Weakness energy={Energy.Electric} />
+                        <Resistance />
+                        <RetreatCost
+                            energy={Energy.Normal}
+                            count={3}
+                        />
+                    </div>
+                    <PokedexEntry
+                        text="It's not very good at precision shooting. When attacking, it just fires its 31 cannons over and over and over."
+                        level={52}
+                        dexNumber={9}
+                    />
+                    <div className='rarity'>
+                        <span>2 / 102</span>
+                        <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
+                    </div>
+                </div>
+            </div>
+            <div className="inputs">
+                <div className="input-group">
+                    <label htmlFor="name">Name:</label>
+                    <input type="text" id="name" value={name} onChange={handleNameChange} maxLength={12} />
+                </div>
+
+                <div className="input-group">
+                    <label htmlFor="hp">HP:</label>
+                    <input type="number" id="hp" value={hp} onChange={handleHPChange} min={30} max={120} step={10} />
+                </div>
+
+                <div className="input-group">
+                    <label htmlFor="pokedex">Pokedex Entry:</label>
+                    <textarea id="pokedex" value={pokedex} onChange={handlePokedexChange} maxLength={110} />
+                </div>
+
+                <div className="input-group">
+                    <label htmlFor="energyCounts">Energy Count:</label>
+                    {energyCounts.map((count, index) => (
+                        <select key={index} id={`energyCounts-${index}`} value={count} onChange={(e) => handleEnergyCountChange(index, e)}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    ))}
+                </div>
+
+                <div className="input-group">
+                    <label htmlFor="attackNames">Attack Names:</label>
+                    {attackNames.map((name, index) => (
+                        <input key={index} type="text" id={`attackNames-${index}`} value={name} maxLength={20} onChange={(e) => handleAttackNameChange(index, e)} />
+                    ))}
                 </div>
             </div>
 
 
-            <div className="pokemon-card" style={{ background: backgroundStyleRed }}>
-                <PokemonNameHP name='Charizard' hp={60} type={Energy.Fire} stage='Stage 2' />
-                <PokemonImage
-                    src="https://mlpnk72yciwc.i.optimole.com/cqhiHLc.IIZS~2ef73/w:auto/h:auto/q:75/https://bleedingcool.com/wp-content/uploads/2020/05/Charizard-Base-SEt-art-pkmn.jpg"
-                    desc='Fire Pokemon'
-                    height={`5'5"`}
-                    weight='90 lbs'
-                    holo
-                />
-                <Attacks>
-                    <PokemonPower name='Enery Burn' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack
-                        name="Fire Spin"
-                        effect="Discard 3 Enery cards attached to this Pokemon."
-                        damage={30}
-                        energyCost={{ type: Energy.Fire, amount: 4 }}
-                    />
-                </Attacks>
-                <div className="additional-info">
-                    <Weakness energy={Energy.Water} />
-                    <Resistance type={Energy.Fighting} amount={20} />
-                    <RetreatCost
-                        energy={Energy.Normal}
-                        count={3}
-                    />
-                </div>
-                <PokedexEntry
-                    text="It is said that Charizard’s fire burns hotter if it has experienced harsh battles."
-                    level={76}
-                    dexNumber={6}
-                />
-                <div className='rarity'>
-                    <span>11 / 108</span>
-                    <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
-                </div>
-            </div>
-
-            <div className="pokemon-card" style={{ background: backgroundStyleGreen }}>
-                <PokemonNameHP name='Venusaur' hp={120} type={Energy.Grass} stage='Stage 2' />
-                <PokemonImage
-                    src="https://bleedingcool.com/wp-content/uploads/2020/07/Base-Set-Venusaur-art-ptcg-1200x900.jpg"
-                    desc='Toad Pokemon'
-                    height={`3'3"`}
-                    weight='45 lbs'
-                    holo
-                />
-                <Attacks>
-                    <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack
-                        name="Solarbeam"
-                        damage={60}
-                        energyCost={{ type: Energy.Grass, amount: 4 }}
-                    />
-                </Attacks>
-                <div className="additional-info">
-                    <Weakness energy={Energy.Fire} />
-                    <Resistance />
-                    <RetreatCost
-                        energy={Energy.Normal}
-                        count={2}
-                    />
-                </div>
-                <PokedexEntry
-                    text="Its plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
-                    level={47}
-                    dexNumber={3}
-                />
-                <div className='rarity'>
-                    <span>15 / 102</span>
-                    <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
-                </div>
-            </div>
-
-            <div className="pokemon-card" style={{ background: backgroundStyleBlue }}>
-                <PokemonNameHP name='Blastoise' hp={100} type={Energy.Water} stage='Stage 2' />
-                <PokemonImage
-                    src="https://cdna.artstation.com/p/assets/images/images/029/617/598/large/anavae-ru-blastoise-base-set-illustration6.jpg?1598119524"
-                    desc='Turtle Pokemon'
-                    height={`4'7"`}
-                    weight='56 lbs'
-                    holo
-                />
-                <Attacks>
-                    <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack
-                        name="Hydo Pump"
-                        effect='Does 40 damage + 10 more for each energy attached.'
-                        damage={40}
-                        energyCost={{ type: Energy.Water, amount: 3 }}
-                    />
-                </Attacks>
-                <div className="additional-info">
-                    <Weakness energy={Energy.Electric} />
-                    <Resistance />
-                    <RetreatCost
-                        energy={Energy.Normal}
-                        count={3}
-                    />
-                </div>
-                <PokedexEntry
-                    text="It's not very good at precision shooting. When attacking, it just fires its 31 cannons over and over and over."
-                    level={52}
-                    dexNumber={9}
-                />
-                <div className='rarity'>
-                    <span>2 / 102</span>
-                    <img src='https://cdn.pixabay.com/photo/2015/01/17/11/45/star-602148_1280.png' alt="Rarity" />
-                </div>
-            </div>
-
-        </div>
+        </>
     );
 };
 
