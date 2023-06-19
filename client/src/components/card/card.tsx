@@ -55,18 +55,34 @@ const PokemonImage: React.FC<PokemonImageProps> = ({ src, desc, height, weight }
     );
 };
 
+interface EnergyCostProps {
+    type: Energy;
+    amount: number;
+}
+
 interface AttackProps {
     name: string;
     effect?: string;
     damage: number;
+    energyCost: EnergyCostProps
 }
 
-const Attack: React.FC<AttackProps> = ({ name, effect, damage }) => {
+const Attack: React.FC<AttackProps> = ({ name, effect, damage, energyCost }) => {
     const fontSize = getMessageSize(effect);
 
     return (
         <div className="attack">
             <p>
+                <div className='energy-cost-container'>
+                    {Array.from({ length: energyCost.amount }, (_, index) => (
+                        <img
+                            key={index}
+                            className='energy-cost'
+                            src={energyCost.type}
+                            alt={`Energy Cost ${index + 1}`}
+                        />
+                    ))}
+                </div>
                 <span className="attack-name">{name}</span>
                 {effect && <span className="effect" style={{ fontSize }}>{effect}</span>}
             </p>
@@ -203,8 +219,17 @@ const Card: React.FC = () => {
                     weight='13.2 lbs'
                 />
                 <Attacks>
-                    <Attack name="Gnaw" damage={20} />
-                    <Attack name="Thunder Jolt" effect="Flip a coin. If tails, Pikachu does 10 damage to itself." damage={30} />
+                    <Attack
+                        name="Gnaw"
+                        damage={20}
+                        energyCost={{ type: Energy.Normal, amount: 1 }}
+                    />
+                    <Attack
+                        name="Thunder Jolt"
+                        effect="Flip a coin. If tails, Pikachu does 10 damage to itself."
+                        damage={30}
+                        energyCost={{ type: Energy.Electric, amount: 2 }}
+                    />
                 </Attacks>
                 <div className="additional-info">
                     <Weakness energy={Energy.Fighting} />
@@ -236,7 +261,12 @@ const Card: React.FC = () => {
                 />
                 <Attacks>
                     <PokemonPower name='Enery Burn' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack name="Fire Spin" effect="Discard 3 Enery cards attached to this Pokemon." damage={30} />
+                    <Attack
+                        name="Fire Spin"
+                        effect="Discard 3 Enery cards attached to this Pokemon."
+                        damage={30}
+                        energyCost={{ type: Energy.Fire, amount: 4 }}
+                    />
                 </Attacks>
                 <div className="additional-info">
                     <Weakness energy={Energy.Water} />
@@ -267,7 +297,11 @@ const Card: React.FC = () => {
                 />
                 <Attacks>
                     <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack name="Solarbeam" damage={60} />
+                    <Attack
+                        name="Solarbeam"
+                        damage={60}
+                        energyCost={{ type: Energy.Grass, amount: 4 }}
+                    />
                 </Attacks>
                 <div className="additional-info">
                     <Weakness energy={Energy.Fire} />
@@ -292,13 +326,18 @@ const Card: React.FC = () => {
                 <PokemonNameHP name='Blastoise' hp={100} type={Energy.Water} stage='Stage 2' />
                 <PokemonImage
                     src="https://cdna.artstation.com/p/assets/images/images/029/617/598/large/anavae-ru-blastoise-base-set-illustration6.jpg?1598119524"
-                    desc='Turlte Pokemon'
+                    desc='Turtle Pokemon'
                     height={`4'7"`}
                     weight='56 lbs'
                 />
                 <Attacks>
                     <PokemonPower name='Enery Drain' effect='As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into {R} Energy for the rest of the turn. This power cant be used if Charizard is Asleep, Confused, or Paralyzed.' />
-                    <Attack name="Hydo Pump" effect='Does 40 damage + 10 more for each energy attached.' damage={40} />
+                    <Attack
+                        name="Hydo Pump"
+                        effect='Does 40 damage + 10 more for each energy attached.'
+                        damage={40}
+                        energyCost={{ type: Energy.Water, amount: 3 }}
+                    />
                 </Attacks>
                 <div className="additional-info">
                     <Weakness energy={Energy.Electric} />

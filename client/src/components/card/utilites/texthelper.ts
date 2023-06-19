@@ -4,11 +4,11 @@ export const getMessageSize = (message: string): string => {
 
         // Define the tiers and corresponding font sizes
         const tiers = [
-            { length: 10, fontSize: '20px' },
-            { length: 20, fontSize: '18px' },
-            { length: 30, fontSize: '14px' },
-            { length: 50, fontSize: '12px' },
-            { length: 70, fontSize: '10px' },
+            { length: 10, fontSize: '12px' },
+            { length: 20, fontSize: '12px' },
+            { length: 30, fontSize: '10px' },
+            { length: 50, fontSize: '10px' },
+            { length: 70, fontSize: '9px' },
             { length: Infinity, fontSize: '8px' }
         ];
 
